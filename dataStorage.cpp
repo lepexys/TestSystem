@@ -10,10 +10,10 @@ void Saver::Save()
 
 }
 
-QMap<int,pair<QStringList,QStringList>> Loader::Load()
+QList<pair<QStringList,QStringList>> Loader::Load()
 {
-    QRegExp rx("(\\ |\\,|\\.|\\:|\\t)");
-    QMap<int,pair<QStringList,QStringList>> data;
+    QRegExp rx("(\\ +|\\,|\\.|\\:|\\t)");
+    QList<pair<QStringList,QStringList>> data;
     QAxObject* excel = new QAxObject("Excel.Application");
     QAxObject* workbooks = excel->querySubObject("Workbooks");
     QAxObject* workbook = workbooks->querySubObject("Open(const QString&)",path);

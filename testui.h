@@ -6,7 +6,6 @@
 #include <QLayout>
 #include <QAction>
 #include <QTextEdit>
-#include <QXmlReader>
 #include <QCheckBox>
 #include <QAxObject>
 #include <qcustomplot.h>
@@ -15,11 +14,11 @@ using namespace std;
 
 class Loader
 {
-    QString path = "C:/Users/lepex/Desktop/Study/MathModelsPhisicalPrecesses/file.xlsx";
+    QString path = QDir::current().path()+"/file.xlsx";
 public:
     Loader(){}
     ~Loader(){}
-    QMap<int,pair<QStringList,QStringList>> Load();
+    QList<pair<QStringList,QStringList>> Load();
 };
 
 class Saver
@@ -34,10 +33,15 @@ public:
 class DataStorage : public Loader, public Saver
 {
 public:
-    QMap<int,pair<QStringList,QStringList>> data;
+    QList<pair<QStringList,QStringList>> data;
     DataStorage();
     ~DataStorage(){}
 };
+class reactorstorage : public DataStorage
+{
+
+};
+
 typedef void (*ButtonAct)(QWidget*,shared_ptr<DataStorage>);
 
 class IWidget : public QWidget
