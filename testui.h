@@ -1,150 +1,42 @@
 #ifndef TESTUI_H
 #define TESTUI_H
 
-#include <QWidget>
-#include <QPushButton>
-#include <QLayout>
-#include <QAction>
-#include <QTextEdit>
-#include <QCheckBox>
-#include <QAxObject>
-#include <qcustomplot.h>
-#include <memory>
+#include "IWidget.h"
+
 using namespace std;
 
-class Loader
-{
-    QString path = QDir::current().path()+"/file.xlsx";
+class Visualisation : public IWidget {
+    static int getDay(const QStringList &i);
+
+    static double getValue(const QStringList &i);
+
 public:
-    Loader(){}
-    ~Loader(){}
-    QList<pair<QStringList,QStringList>> Load();
+    explicit Visualisation(shared_ptr<DataStorage>);
 };
 
-class Saver
-{
-    QString path = "file.xlsx";
+class Correlator : public IWidget {
 public:
-    Saver(){}
-    ~Saver(){}
-    void Save();
+    explicit Correlator(shared_ptr<DataStorage>);
 };
 
-class DataStorage : public Loader, public Saver
-{
+class Interpolator : public IWidget {
 public:
-    QList<pair<QStringList,QStringList>> data;
-    DataStorage();
-    ~DataStorage(){}
-};
-class reactorstorage : public DataStorage
-{
-
+    explicit Interpolator(shared_ptr<DataStorage>);
 };
 
-typedef void (*ButtonAct)(QWidget*,shared_ptr<DataStorage>);
-
-class IWidget : public QWidget
-{
-    Q_OBJECT
+class Tester : public IWidget {
 public:
-    shared_ptr<DataStorage> storage;
-    QList<shared_ptr<QLayout>> layouts;
-    QList<shared_ptr<QPushButton>> buttons;
-    QList<shared_ptr<QWidget>> widgets;
-    IWidget(shared_ptr<DataStorage> strg = make_shared<DataStorage>(),QWidget *parent = nullptr): QWidget(parent)
-    {
-        storage = strg;
-        layouts.append(make_shared<QVBoxLayout>(this));
-        layouts[0]->setAlignment(Qt::AlignmentFlag::AlignCenter);
-        addLayout(make_shared<QVBoxLayout>());
-        layouts[1]->setAlignment(Qt::AlignmentFlag::AlignLeft);
-    }
-    ~IWidget(){}
-    void addButton(QRect rect,QString text,ButtonAct act,int layInd = 0)
-    {
-        shared_ptr<QPushButton> butn = make_shared<QPushButton>(text);
-        butn->setGeometry(rect);
-        QObject::connect(butn.get(),&QPushButton::pressed,[=](){act(this,storage);});
-        layouts[layInd]->addWidget(butn.get());
-        buttons.append(butn);
-    }
-    void addWidget(shared_ptr<QWidget> widget,QRect rect,int layInd = 0)
-    {
-        widget->setGeometry(rect);
-        layouts[layInd]->addWidget(widget.get());
-        widgets.append(widget);
-    }
-    void addWidget(shared_ptr<QWidget> widget,QRect rect,int row,int col,int layInd = 0)
-    {
-        widget->setGeometry(rect);
-        static_cast<QGridLayout*>(layouts[layInd].get())->addWidget(widget.get(),row,col);
-        widgets.append(widget);
-    }
-    void addLayout(shared_ptr<QLayout> layout,int layInd = 0)
-    {
-        static_cast<QBoxLayout*>(layouts[layInd].get())->addLayout(layout.get());
-        layouts.append(layout);
-    }
-public slots:
-    static void funcTest(QWidget*,shared_ptr<DataStorage>);
-    static void funcVisual(QWidget*,shared_ptr<DataStorage>);
-    static void funcReactor(QWidget*,shared_ptr<DataStorage>);
-    static void funcHelp(QWidget*,shared_ptr<DataStorage>);
-    static void funcExit(QWidget*,shared_ptr<DataStorage>);
+    explicit Tester(shared_ptr<DataStorage> = make_shared<DataStorage>());
 };
 
-class Visualisation:public IWidget
-{
+class Reactor : public IWidget {
 public:
-    Visualisation(shared_ptr<DataStorage>);
-    ~Visualisation(){}
-};
-class Correlator:public IWidget
-{
-public:
-    Correlator(shared_ptr<DataStorage>);
-    ~Correlator(){}
-};
-class Interpolator:public IWidget
-{
-public:
-    Interpolator(shared_ptr<DataStorage>);
-    ~Interpolator(){}
-};
-class Tester:public IWidget
-{
-public:
-    Tester(shared_ptr<DataStorage> = make_shared<DataStorage>());
-    ~Tester(){}
+    explicit Reactor(shared_ptr<DataStorage> = make_shared<DataStorage>());
 };
 
-class Reactor:public IWidget
-{
+class Helper : public IWidget {
 public:
-    Reactor(shared_ptr<DataStorage> = make_shared<DataStorage>());
-    ~Reactor(){}
-};
-
-class Helper:public IWidget
-{
-public:
-    Helper(shared_ptr<DataStorage> = make_shared<DataStorage>());
-    ~Helper(){}
-};
-
-class MainMenu:public IWidget
-{
-public:
-    MainMenu():IWidget()
-    {
-        addButton(QRect(0,0,100,60),"Тестирование",funcTest);
-        addButton(QRect(0,0,100,60),"Статистика",funcVisual);
-        addButton(QRect(0,0,100,60),"Реактор",funcReactor);
-        addButton(QRect(0,0,100,60),"Справка",funcHelp);
-        addButton(QRect(0,0,100,60),"Выход",funcExit);
-    }
-    ~MainMenu(){}
+    explicit Helper(shared_ptr<DataStorage> = make_shared<DataStorage>());
 };
 
 #endif // TESTUI_H

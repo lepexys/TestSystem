@@ -9,19 +9,17 @@ CONFIG += c++14
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    buttonFunctions.cpp \
-    correlator.cpp \
-    dataStorage.cpp \
-    helper.cpp \
-    interpolator.cpp \
-    main.cpp \
     qcustomplot.cpp \
-    reactor.cpp \
-    testui.cpp \
-    visualisation.cpp
+    DataStorage.cpp \
+    IWidget.cpp \
+    MainMenu.cpp \
+    testui.cpp
 
 HEADERS += \
     qcustomplot.h \
+    DataStorage.h \
+    IWidget.h \
+    MainMenu.h \
     testui.h
 
 # Default rules for deployment.
