@@ -57,13 +57,13 @@ Tester::Tester(shared_ptr<DataStorage> storage) : IWidget(storage) {
 }
 
 Visualisation::Visualisation(shared_ptr<DataStorage> storage) : IWidget(storage) {
-    shared_ptr<QLabel> graphLabel = make_shared<QLabel>("График считанных данных");
-    addWidget(graphLabel, QRect(0, 0, 100, 60));
+    shared_ptr<QLabel> txtedit = make_shared<QLabel>("График считанных данных");
+    addWidget(txtedit,QRect(0,0,100,60));
     addLayout(make_shared<QGridLayout>());
-    shared_ptr<QCustomPlot> plot = make_shared<QCustomPlot>();
-    plot.get()->addGraph();
-    plot->graph(0)->setPen(QPen(Qt::blue));
-    plot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
+    shared_ptr<QCustomPlot> cplot = make_shared<QCustomPlot>();
+    cplot.get()->addGraph();
+    cplot->graph(0)->setPen(QPen(Qt::red));
+    cplot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
     QVector<double> x, y;
     for (auto &i: storage.get()->data) {
         if (i.first.length() == 6 && i.second.length() == 2) {
@@ -74,14 +74,63 @@ Visualisation::Visualisation(shared_ptr<DataStorage> storage) : IWidget(storage)
             y.append(getDay(i.second));
         }
     }
-    plot->xAxis2->setVisible(true);
-    plot->yAxis2->setVisible(true);
-    plot->graph(0)->setData(x, y);
-    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-    plot->graph(0)->rescaleAxes(true);
-    plot->setMinimumSize(QSize(300, 280));
-    plot->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    addWidget(plot, QRect(0, 0, 100, 60), 0, 0, 2);
+    double expval = 0, expval2 = 0, disp, stdev, a = y[0], b = y[0], n = 0;
+    QVector<double>  px, py;
+    for (int i=0; i<y.size(); i++)
+    {
+        expval = expval + y[i];
+        expval2 = expval2 + pow(y[i],2);
+    }
+    expval = expval/y.size();
+    expval2 = expval2/y.size();
+    disp = (expval2 - pow(expval,2))*y.size()/(y.size()-1);
+    stdev = sqrt(disp);
+    for (int i = 0; i<y.size(); i++)
+    {
+        if (a > y[i])
+            a = y[i];
+        if (b < y[i])
+            b = y[i];
+    }
+    n=(b-a)/100;
+    for (int i=0; i < 8*stdev/n; i++)
+    {
+        if (px.size() == 0)
+            px.append(expval-4*stdev);
+        else
+            px.append(px[i-1]+n);
+    }
+    for (int i=0; i<px.size(); i++)
+        py.append(1/stdev/sqrt(2*M_PI)*exp((-0.5)*pow(((px[i]-expval)/stdev),2)));
+    cplot->xAxis2->setVisible(true);
+    cplot->yAxis2->setVisible(true);
+    cplot->graph(0)->setData(px, py);
+    cplot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    cplot->graph(0)->rescaleAxes(true);
+    cplot->setMinimumSize(QSize(300,280));
+    cplot->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    cplot->rescaleAxes();
+    addWidget(cplot,QRect(0,0,100,60),2,0,2);
+
+
+    shared_ptr<QLabel> lblev = make_shared<QLabel>("Мат. ожидание: " + QString::number(expval));
+    addWidget(lblev,QRect(0,0,200,60),0,1,2);
+    shared_ptr<QLabel> lbld = make_shared<QLabel>("Дисперсия: " + QString::number(disp));
+    addWidget(lbld,QRect(0,0,200,60),0,2,2);
+    shared_ptr<QLabel> lblsd = make_shared<QLabel>("Среднеквадратичное отклонение: " + QString::number(stdev));
+    addWidget(lblsd,QRect(0,0,200,60),0,3,2);
+    double m3 = 0, m4 = 0, skewness = 0, kurtosis = 0;
+    for (int i=0; i<y.size(); i++)
+    {
+        m3 = m3 + pow((y[i]-expval),3);
+        m4 = m4 + pow((y[i]-expval),4);
+    }
+    skewness = m3/y.size()/pow(stdev,3);
+    kurtosis = m4/y.size()/pow(stdev,4) - 3;
+    shared_ptr<QLabel> lblskwnss = make_shared<QLabel>("К-т асимметрии: " + QString::number(skewness));
+    addWidget(lblskwnss,QRect(0,0,200,60),1,1,2);
+    shared_ptr<QLabel> lblkrtss = make_shared<QLabel>("К-т эксцесса: " + QString::number(kurtosis));
+    addWidget(lblkrtss,QRect(0,0,200,60),1,2,2);
 }
 
 double Visualisation::getValue(const QStringList &i) { return (i[0] + '.' + i[1]).toDouble(); }
