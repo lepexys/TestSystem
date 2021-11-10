@@ -20,11 +20,15 @@ public:
 
     void addButton(QRect rect, const QString &text, ButtonAct act, int layInd = 0);
 
+    void addButton(QRect rect, const QString &text, ButtonAct act, int row, int col, int layInd = 0);
+
     void addWidget(const shared_ptr<QWidget> &widget, QRect rect, int layInd = 0);
 
     void addWidget(const shared_ptr<QWidget> &widget, QRect rect, int row, int col, int layInd = 0);
 
     void addLayout(const shared_ptr<QLayout> &layout, int layInd = 0);
+
+    void addLayout(const shared_ptr<QLayout> &layout, int row, int col, int layInd = 0);
 };
 
 #endif //TESTSYSTEM_IWIDGET_H

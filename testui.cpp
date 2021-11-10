@@ -60,7 +60,7 @@ Visualisation::Visualisation(shared_ptr<DataStorage> storage) : IWidget(storage)
     shared_ptr<QLabel> txtedit = make_shared<QLabel>("График считанных данных");
     addWidget(txtedit,QRect(0,0,100,60));
     addLayout(make_shared<QGridLayout>());
-    shared_ptr<QCustomPlot> cplot = make_shared<QCustomPlot>();
+    cplot = make_shared<QCustomPlot>();
     cplot.get()->addGraph();
     cplot->graph(0)->setPen(QPen(Qt::red));
     cplot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
@@ -111,14 +111,12 @@ Visualisation::Visualisation(shared_ptr<DataStorage> storage) : IWidget(storage)
     cplot->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     cplot->rescaleAxes();
     addWidget(cplot,QRect(0,0,100,60),2,0,2);
+    addLayout(make_shared<QGridLayout>(),2,1,2);
+    addButton(QRect(0,0,100,60),"Автокорреляция",funcAutocorrelation,0,0,3);
+    addButton(QRect(0,0,100,60),"Корреляция",funcCorrelation,1,0,3);
 
-
-    shared_ptr<QLabel> lblev = make_shared<QLabel>("Мат. ожидание: " + QString::number(expval));
+    shared_ptr<QLabel> lblev = make_shared<QLabel>("Мат. ожидание: " + QString::number(expval)+" Дисперсия: " + QString::number(disp)+" Среднеквадратичное отклонение: " + QString::number(stdev));
     addWidget(lblev,QRect(0,0,200,60),0,1,2);
-    shared_ptr<QLabel> lbld = make_shared<QLabel>("Дисперсия: " + QString::number(disp));
-    addWidget(lbld,QRect(0,0,200,60),0,2,2);
-    shared_ptr<QLabel> lblsd = make_shared<QLabel>("Среднеквадратичное отклонение: " + QString::number(stdev));
-    addWidget(lblsd,QRect(0,0,200,60),0,3,2);
     double m3 = 0, m4 = 0, skewness = 0, kurtosis = 0;
     for (int i=0; i<y.size(); i++)
     {
@@ -127,10 +125,49 @@ Visualisation::Visualisation(shared_ptr<DataStorage> storage) : IWidget(storage)
     }
     skewness = m3/y.size()/pow(stdev,3);
     kurtosis = m4/y.size()/pow(stdev,4) - 3;
-    shared_ptr<QLabel> lblskwnss = make_shared<QLabel>("К-т асимметрии: " + QString::number(skewness));
+    shared_ptr<QLabel> lblskwnss = make_shared<QLabel>("К-т асимметрии: " + QString::number(skewness)+" К-т эксцесса: " + QString::number(kurtosis));
     addWidget(lblskwnss,QRect(0,0,200,60),1,1,2);
-    shared_ptr<QLabel> lblkrtss = make_shared<QLabel>("К-т эксцесса: " + QString::number(kurtosis));
-    addWidget(lblkrtss,QRect(0,0,200,60),1,2,2);
+}
+
+void Visualisation::funcAutocorrelation(QWidget *widget, shared_ptr<DataStorage> strg)
+{
+    QList<pair<QStringList, QStringList>> data =
+            strg.get()->Load(QFileDialog::getOpenFileName(widget,tr("Open File"), QDir::current().path(), tr("Files (*.xlsx)")));
+    QVector<double> x, y;
+    QVector<double> step,corr;
+    for (auto &i: data) {
+        if (i.first.length() == 6 && i.second.length() == 2) {
+            x.append(getDay(i.first));
+            y.append(getValue(i.second));
+        } else if (i.first.length() == 2 && i.second.length() == 6) {
+            x.append(getValue(i.first));
+            y.append(getDay(i.second));
+        }
+    }
+    double expval = 0;
+    for (int i=0; i<y.size(); i++)
+    {
+        expval = expval + y[i];
+    }
+    expval = expval/y.size();
+    for (int i = 1; i < 20; ++i) {
+        double cor = (y[0]-expval)*(y[i]-expval);
+        for(int j = 1;j<x.length()-i;j++)
+        {
+            cor = ((y[j]-expval)*(y[j+i]-expval)+cor*j)/j+1;
+        }
+        corr.append(cor);
+        step.append(i);
+    }
+    dynamic_cast<Visualisation*>(widget)->cplot->graph(0)->setData(step, corr);
+    dynamic_cast<Visualisation*>(widget)->cplot->graph(0)->rescaleAxes(true);
+    dynamic_cast<Visualisation*>(widget)->cplot->rescaleAxes();
+    dynamic_cast<Visualisation*>(widget)->cplot->update(); //Can't update
+}
+
+void Visualisation::funcCorrelation(QWidget *, shared_ptr<DataStorage>)
+{
+
 }
 
 double Visualisation::getValue(const QStringList &i) { return (i[0] + '.' + i[1]).toDouble(); }
