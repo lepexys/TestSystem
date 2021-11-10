@@ -5,17 +5,6 @@
 
 using namespace std;
 
-class Visualisation : public IWidget {
-    shared_ptr<QCustomPlot> cplot;
-    static int getDay(const QStringList &i);
-    static double getValue(const QStringList &i);
-
-public:
-    explicit Visualisation(shared_ptr<DataStorage>);
-    static void funcAutocorrelation(QWidget *, shared_ptr<DataStorage>);
-    static void funcCorrelation(QWidget *, shared_ptr<DataStorage>);
-};
-
 class Correlator : public IWidget {
 public:
     explicit Correlator(shared_ptr<DataStorage>);

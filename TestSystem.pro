@@ -13,6 +13,7 @@ SOURCES += \
     DataStorage.cpp \
     IWidget.cpp \
     MainMenu.cpp \
+    Visualisation.cpp \
     testui.cpp
 
 HEADERS += \
@@ -20,9 +21,14 @@ HEADERS += \
     DataStorage.h \
     IWidget.h \
     MainMenu.h \
+    Visualisation.h \
     testui.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+INCLUDEPATH += C:/msys64/mingw64/include
+DEPENDPATH += C:/msys64/mingw64/include
+LIBS += -LC:\msys64\mingw64\lib -lgsl -lgslcblas
