@@ -2,6 +2,7 @@
 #define TESTSYSTEM_MAINMENU_H
 
 #include "IWidget.h"
+#include "Visualisation.h"
 #include "testui.h"
 
 class MainMenu : public IWidget {
