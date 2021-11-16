@@ -4,6 +4,7 @@
 #include "IWidget.h"
 #include "Visualisation.h"
 #include "testui.h"
+#include "Reactor.h"
 
 class MainMenu : public IWidget {
 public:

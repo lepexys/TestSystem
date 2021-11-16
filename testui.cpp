@@ -1,47 +1,5 @@
 #include "testui.h"
 
-Reactor::Reactor(shared_ptr<DataStorage> storage) : IWidget(storage) {
-    shared_ptr<QLabel> parametersLabel = make_shared<QLabel>("Парамеры реактора");
-    addWidget(parametersLabel, QRect(0, 0, 100, 60));
-    addLayout(make_shared<QHBoxLayout>());
-    shared_ptr<QLabel> img = make_shared<QLabel>();
-    QPixmap pixmap("reactor.jpg");
-    img->setPixmap(pixmap);
-    addWidget(img, QRect(0, 0, 200, 200), 2);
-    addLayout(make_shared<QVBoxLayout>(), 2);
-    shared_ptr<QLabel> firstParamLabel = make_shared<QLabel>("Параметр 1");
-    addWidget(firstParamLabel, QRect(0, 0, 200, 60), 3);
-    shared_ptr<QDoubleSpinBox> firstParamCounter = make_shared<QDoubleSpinBox>();
-    addWidget(firstParamCounter, QRect(0, 0, 200, 60), 3);
-    shared_ptr<QLabel> secondParamLabel = make_shared<QLabel>("Параметр 2");
-    addWidget(secondParamLabel, QRect(0, 0, 200, 60), 3);
-    shared_ptr<QDoubleSpinBox> secondParamCounter = make_shared<QDoubleSpinBox>();
-    addWidget(secondParamCounter, QRect(0, 0, 200, 60), 3);
-    shared_ptr<QLabel> thirdParamLabel = make_shared<QLabel>("Параметр 3");
-    addWidget(thirdParamLabel, QRect(0, 0, 200, 60), 3);
-    shared_ptr<QDoubleSpinBox> thirdParamCounter = make_shared<QDoubleSpinBox>();
-    addWidget(thirdParamCounter, QRect(0, 0, 200, 60), 3);
-    shared_ptr<QLabel> graphLabel = make_shared<QLabel>("График");
-    addWidget(graphLabel, QRect(0, 0, 100, 60));
-    shared_ptr<QCustomPlot> plot = make_shared<QCustomPlot>();
-    plot->addGraph();
-    plot->graph(0)->setPen(QPen(Qt::blue));
-    plot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
-    QVector<double> x(251), y(251);
-    for (int i = 0; i < 251; ++i) {
-        x[i] = i;
-        y[i] = exp(i / 100) + exp((100 + i) / 100);
-    }
-    plot->xAxis2->setVisible(true);
-    plot->yAxis2->setVisible(true);
-    plot->graph(0)->setData(x, y);
-    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-    plot->graph(0)->rescaleAxes(true);
-    plot->setMinimumSize(QSize(300, 280));
-    plot->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    addWidget(plot, QRect(0, 0, 100, 60));
-}
-
 Tester::Tester(shared_ptr<DataStorage> storage) : IWidget(storage) {
     shared_ptr<QLabel> label = make_shared<QLabel>("Вопрос: Вопрос?");
     addWidget(label, QRect(0, 0, 100, 60));

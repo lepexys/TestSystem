@@ -11,6 +11,7 @@ CONFIG += c++14
 SOURCES += \
     qcustomplot.cpp \
     DataStorage.cpp \
+    Reactor.cpp \
     IWidget.cpp \
     MainMenu.cpp \
     Visualisation.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 HEADERS += \
     qcustomplot.h \
     DataStorage.h \
+    Reactor.h \
     IWidget.h \
     MainMenu.h \
     Visualisation.h \
