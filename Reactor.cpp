@@ -1,46 +1,46 @@
 #include "Reactor.h"
 
 Reactor::Reactor(shared_ptr<DataStorage> storage) : IWidget(storage) {
-    shared_ptr<QLabel> parametersLabel = make_shared<QLabel>("Парамеры реактора");
+    shared_ptr <QLabel> parametersLabel = make_shared<QLabel>("Парамеры реактора");
     addWidget(parametersLabel, QRect(0, 0, 100, 60));
 
     addLayout(make_shared<QHBoxLayout>());
     addLayout(make_shared<QVBoxLayout>(), 2);
 
-    shared_ptr<QLabel> aParamLabel = make_shared<QLabel>("A");
+    shared_ptr <QLabel> aParamLabel = make_shared<QLabel>("A");
     addWidget(aParamLabel, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QDoubleSpinBox> aParamCounter = make_shared<QDoubleSpinBox>();
+    shared_ptr <QDoubleSpinBox> aParamCounter = make_shared<QDoubleSpinBox>();
     aParamCounter->setRange(0.004, 0.0045);
     aParamCounter->setSingleStep(0.0001);
-    connect(aParamCounter.get(), &QDoubleSpinBox::valueChanged, this, &Reactor::aParamChanged);
+//    connect(aParamCounter.get(), &QDoubleSpinBox::valueChanged, this, &Reactor::aParamChanged);
     addWidget(aParamCounter, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QLabel> hParamLabel = make_shared<QLabel>("H");
+    shared_ptr <QLabel> hParamLabel = make_shared<QLabel>("H");
     addWidget(hParamLabel, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QSpinBox> hParamCounter = make_shared<QSpinBox>();
+    shared_ptr <QSpinBox> hParamCounter = make_shared<QSpinBox>();
     hParamCounter->setRange(300, 350);
     hParamCounter->setSingleStep(5);
-    connect(hParamCounter.get(), &QSpinBox::valueChanged, this, &Reactor::hParamChanged);
+//    connect(hParamCounter.get(), &QSpinBox::valueChanged, this, &Reactor::hParamChanged);
     addWidget(hParamCounter, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QLabel> mParamLabel = make_shared<QLabel>("M");
+    shared_ptr <QLabel> mParamLabel = make_shared<QLabel>("M");
     addWidget(mParamLabel, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QSpinBox> mParamCounter = make_shared<QSpinBox>();
+    shared_ptr <QSpinBox> mParamCounter = make_shared<QSpinBox>();
     mParamCounter->setRange(10, 30);
     mParamCounter->setSingleStep(2);
-    connect(mParamCounter.get(), &QSpinBox::valueChanged, this, &Reactor::mParamChanged);
+//    connect(mParamCounter.get(), &QSpinBox::valueChanged, this, &Reactor::mParamChanged);
     addWidget(mParamCounter, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QLabel> dParamLabel = make_shared<QLabel>("D");
+    shared_ptr <QLabel> dParamLabel = make_shared<QLabel>("D");
     addWidget(dParamLabel, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QSpinBox> dParamCounter = make_shared<QSpinBox>();
+    shared_ptr <QSpinBox> dParamCounter = make_shared<QSpinBox>();
     dParamCounter->setRange(0, 100);
     dParamCounter->setSingleStep(5);
-    connect(dParamCounter.get(), &QSpinBox::valueChanged, this, &Reactor::dParamChanged);
+//    connect(dParamCounter.get(), &QSpinBox::valueChanged, this, &Reactor::dParamChanged);
     addWidget(dParamCounter, QRect(0, 0, 200, 60), 3);
 
     reactorPlot->addGraph();
