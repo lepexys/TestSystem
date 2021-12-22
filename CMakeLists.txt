@@ -27,7 +27,10 @@ add_executable(TestSystem
         DataStorage.cpp DataStorage.h
         IWidget.cpp IWidget.h
         MainMenu.cpp MainMenu.h
-        Visualisation.cpp Visualisation.h Reactor.cpp Reactor.h)
+        Visualisation.cpp Visualisation.h
+        Reactor.cpp Reactor.h
+        Solver.cpp Solver.h
+        )
 
 target_link_libraries(TestSystem GSL::gsl GSL::gslcblas)
 target_link_libraries(TestSystem Qt5::Widgets Qt5::AxContainer Qt5::Core Qt5::Gui Qt5::PrintSupport)

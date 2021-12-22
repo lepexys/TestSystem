@@ -5,6 +5,7 @@
 #include "Visualisation.h"
 #include "testui.h"
 #include "Reactor.h"
+#include "Solver.h"
 
 class MainMenu : public IWidget {
 public:
@@ -17,6 +18,8 @@ public slots:
     static void funcVisual(QWidget *, shared_ptr<DataStorage>);
 
     static void funcReactor(QWidget *, shared_ptr<DataStorage>);
+
+    static void funcSolver(QWidget *, shared_ptr<DataStorage>);
 
     static void funcHelp(QWidget *, shared_ptr<DataStorage>);
 

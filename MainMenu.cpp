@@ -4,6 +4,7 @@ MainMenu::MainMenu() : IWidget() {
     addButton(QRect(0, 0, 100, 60), "Тестирование", funcTest);
     addButton(QRect(0, 0, 100, 60), "Статистика", funcVisual);
     addButton(QRect(0, 0, 100, 60), "Реактор", funcReactor);
+    addButton(QRect(0, 0, 100, 60), "Решатель", funcSolver);
     addButton(QRect(0, 0, 100, 60), "Справка", funcHelp);
     addButton(QRect(0, 0, 100, 60), "Выход", funcExit);
 }
@@ -19,8 +20,13 @@ void MainMenu::funcVisual(QWidget *, shared_ptr<DataStorage> storage) {
 }
 
 void MainMenu::funcReactor(QWidget *, shared_ptr<DataStorage> storage) {
-    Reactor *react = new Reactor(storage);
-    react->show();
+    Reactor *reactor = new Reactor(storage);
+    reactor->show();
+}
+
+void MainMenu::funcSolver(QWidget *, shared_ptr<DataStorage> storage) {
+    Solver *solver = new Solver(storage);
+    solver->show();
 }
 
 void MainMenu::funcHelp(QWidget *, shared_ptr<DataStorage> storage) {
