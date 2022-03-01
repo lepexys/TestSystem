@@ -20,11 +20,6 @@ public:
     explicit Tester(shared_ptr<DataStorage> = make_shared<DataStorage>());
 };
 
-class Reactor : public IWidget {
-public:
-    explicit Reactor(shared_ptr<DataStorage> = make_shared<DataStorage>());
-};
-
 class Helper : public IWidget {
 public:
     explicit Helper(shared_ptr<DataStorage> = make_shared<DataStorage>());
