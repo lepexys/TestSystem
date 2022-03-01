@@ -77,8 +77,8 @@ double Reactor::reactorFunction(double x) {
         return std::cos(*aParam * x);
     } else {
         return std::cos(*aParam * *hParam)
-               * std::sinh((*hParam + *dParam - x) / *mParam)
-               / std::sinh(*dParam / *mParam);
+               * std::sinh((double)(*hParam + *dParam - x) / *mParam)
+               / std::sinh((double)*dParam / *mParam);
     }
 }
 
