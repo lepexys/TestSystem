@@ -14,7 +14,19 @@ public:
     static void funcAutocorrelation(QWidget *, shared_ptr<DataStorage>);
 
     static void funcCorrelation(QWidget *, shared_ptr<DataStorage>);
+
+    static void saveData(QWidget *, shared_ptr<DataStorage>);
+
+    static void interpolationNewton(QWidget *, shared_ptr<DataStorage>);
+
+    static void interpolationSplines(QWidget *, shared_ptr<DataStorage>);
+
+    static void interpolationLSM(QWidget *, shared_ptr<DataStorage>);
+
+    static void histogramView(QWidget *, shared_ptr<DataStorage>);
+
 };
 
 
 #endif //TESTSYSTEM_VISUALISATION_H
+//QVector<double> &data, const shared_ptr<QCustomPlot> &plot
