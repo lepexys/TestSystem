@@ -1,13 +1,16 @@
 #include "Reactor.h"
 
 Reactor::Reactor(shared_ptr<DataStorage> storage) : IWidget(storage) {
-    shared_ptr<QLabel> parametersLabel = make_shared<QLabel>("Парамеры реактора");
+    shared_ptr<QLabel> parametersLabel = make_shared<QLabel>("Распределение плотности потока\nнейтронов в реакторе типа РБМК");
     addWidget(parametersLabel, QRect(0, 0, 100, 60));
+
+    shared_ptr<QLabel> secondLabel = make_shared<QLabel>("Введите физические парамеры реактора");
+    addWidget(secondLabel, QRect(0, 0, 100, 60));
 
     addLayout(make_shared<QHBoxLayout>());
     addLayout(make_shared<QVBoxLayout>(), 2);
 
-    shared_ptr<QLabel> aParamLabel = make_shared<QLabel>("A");
+    shared_ptr<QLabel> aParamLabel = make_shared<QLabel>("α - константа, связанная с коэффициентом размножения");
     addWidget(aParamLabel, QRect(0, 0, 200, 60), 3);
 
     shared_ptr<QDoubleSpinBox> aParamCounter = make_shared<QDoubleSpinBox>();
@@ -18,7 +21,7 @@ Reactor::Reactor(shared_ptr<DataStorage> storage) : IWidget(storage) {
     connect(aParamCounter.get(), qOverload<double>(&QDoubleSpinBox::valueChanged), this, &Reactor::aParamChanged);
     addWidget(aParamCounter, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QLabel> hParamLabel = make_shared<QLabel>("H");
+    shared_ptr<QLabel> hParamLabel = make_shared<QLabel>("h - длина половины активной зоны (см)");
     addWidget(hParamLabel, QRect(0, 0, 200, 60), 3);
 
     shared_ptr<QSpinBox> hParamCounter = make_shared<QSpinBox>();
@@ -28,7 +31,7 @@ Reactor::Reactor(shared_ptr<DataStorage> storage) : IWidget(storage) {
     connect(hParamCounter.get(), qOverload<int>(&QSpinBox::valueChanged), this, &Reactor::hParamChanged);
     addWidget(hParamCounter, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QLabel> mParamLabel = make_shared<QLabel>("M");
+    shared_ptr<QLabel> mParamLabel = make_shared<QLabel>("M - длина миграции (см)");
     addWidget(mParamLabel, QRect(0, 0, 200, 60), 3);
 
     shared_ptr<QSpinBox> mParamCounter = make_shared<QSpinBox>();
@@ -38,7 +41,7 @@ Reactor::Reactor(shared_ptr<DataStorage> storage) : IWidget(storage) {
     connect(mParamCounter.get(), qOverload<int>(&QSpinBox::valueChanged), this, &Reactor::mParamChanged);
     addWidget(mParamCounter, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QLabel> dParamLabel = make_shared<QLabel>("D");
+    shared_ptr<QLabel> dParamLabel = make_shared<QLabel>("d - тощина отражателя (см)");
     addWidget(dParamLabel, QRect(0, 0, 200, 60), 3);
 
     shared_ptr<QSpinBox> dParamCounter = make_shared<QSpinBox>();

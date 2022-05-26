@@ -10,13 +10,16 @@ Solver::Solver(shared_ptr<DataStorage> storage) : IWidget(storage) {
     imageLabel->setPixmap(*image);
     addWidget(imageLabel, QRect(0, 0, 200, 60));
 
-    shared_ptr<QLabel> parametersLabel = make_shared<QLabel>("Парамеры функции");
+    shared_ptr<QLabel> topLabel = make_shared<QLabel>("Решение критического условия\nметодом производных Ньютона");
+    addWidget(topLabel, QRect(0, 0, 100, 60));
+
+    shared_ptr<QLabel> parametersLabel = make_shared<QLabel>("Введите параметры уравнения");
     addWidget(parametersLabel, QRect(0, 0, 100, 60));
 
     addLayout(make_shared<QHBoxLayout>());
     addLayout(make_shared<QVBoxLayout>(), 2);
 
-    shared_ptr<QLabel> hParamLabel = make_shared<QLabel>("H");
+    shared_ptr<QLabel> hParamLabel = make_shared<QLabel>("h - половина длины активной зоны (см)");
     addWidget(hParamLabel, QRect(0, 0, 200, 60), 3);
 
     shared_ptr<QSpinBox> hParamCounter = make_shared<QSpinBox>();
@@ -26,7 +29,7 @@ Solver::Solver(shared_ptr<DataStorage> storage) : IWidget(storage) {
     connect(hParamCounter.get(), qOverload<int>(&QSpinBox::valueChanged), this, &Solver::hParamChanged);
     addWidget(hParamCounter, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QLabel> mParamLabel = make_shared<QLabel>("M");
+    shared_ptr<QLabel> mParamLabel = make_shared<QLabel>("M - длина миграции (см)");
     addWidget(mParamLabel, QRect(0, 0, 200, 60), 3);
 
     shared_ptr<QSpinBox> mParamCounter = make_shared<QSpinBox>();
@@ -36,7 +39,7 @@ Solver::Solver(shared_ptr<DataStorage> storage) : IWidget(storage) {
     connect(mParamCounter.get(), qOverload<int>(&QSpinBox::valueChanged), this, &Solver::mParamChanged);
     addWidget(mParamCounter, QRect(0, 0, 200, 60), 3);
 
-    shared_ptr<QLabel> dParamLabel = make_shared<QLabel>("D");
+    shared_ptr<QLabel> dParamLabel = make_shared<QLabel>("d - толщина отражателя (см)");
     addWidget(dParamLabel, QRect(0, 0, 200, 60), 3);
 
     shared_ptr<QSpinBox> dParamCounter = make_shared<QSpinBox>();
@@ -106,7 +109,7 @@ void Solver::solve() {
     printf("%-5s %10s %10s %10s\n", "iter", "root", "err", "err(est)");
     do {
         iter++;
-        aLabel->setText(QString::number(x));
+        aLabel->setText("α = " + QString::number(x));
         status = gsl_root_fdfsolver_iterate(s);
         x0 = x;
         x = gsl_root_fdfsolver_root(s);
