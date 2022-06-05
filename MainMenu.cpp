@@ -1,11 +1,11 @@
 #include "MainMenu.h"
 
 MainMenu::MainMenu() : IWidget() {
-    addButton(QRect(0, 0, 100, 60), "Тестирование", funcTest);
+    // addButton(QRect(0, 0, 100, 60), "Тестирование", funcTest);
     addButton(QRect(0, 0, 100, 60), "Статистика", funcVisual);
     addButton(QRect(0, 0, 100, 60), "Реактор", funcReactor);
     addButton(QRect(0, 0, 100, 60), "Решатель", funcSolver);
-    addButton(QRect(0, 0, 100, 60), "Справка", funcHelp);
+    // addButton(QRect(0, 0, 100, 60), "Справка", funcHelp);
     addButton(QRect(0, 0, 100, 60), "Выход", funcExit);
 }
 
