@@ -9,7 +9,9 @@
 class Visualisation : public IWidget {
     shared_ptr<QCustomPlot> cplot;
 public:
-    explicit Visualisation(shared_ptr<DataStorage>);
+    explicit Visualisation(shared_ptr<DataStorage>, const QString path);
+
+    static void closeWindow(QWidget *, shared_ptr<DataStorage> strg);
 
     static void funcAutocorrelation(QWidget *, shared_ptr<DataStorage>);
 

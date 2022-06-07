@@ -14,9 +14,15 @@ void MainMenu::funcTest(QWidget *, shared_ptr<DataStorage> storage) {
     tester->show();
 }
 
-void MainMenu::funcVisual(QWidget *, shared_ptr<DataStorage> storage) {
-    Visualisation *visual = new Visualisation(storage);
-    visual->show();
+void MainMenu::funcVisual(QWidget *widget, shared_ptr<DataStorage> storage) {
+    QString path = QFileDialog::getOpenFileName(widget, tr("Open File"), QDir::current().path(), tr("Files (*.xlsx)"));
+    if (path != "") {
+        storage->data = storage->Load(path);
+        Visualisation *visual = new Visualisation(storage, path);
+        visual->show();
+    }
+    else
+        QMessageBox::information(NULL,QObject::tr("Информация"),tr("Файл не выбран"));
 }
 
 void MainMenu::funcReactor(QWidget *, shared_ptr<DataStorage> storage) {
@@ -35,7 +41,6 @@ void MainMenu::funcHelp(QWidget *, shared_ptr<DataStorage> storage) {
 }
 
 void MainMenu::funcExit(QWidget *widget, shared_ptr<DataStorage> storage) {
-    storage->Save(QDir::current().path() + "newFile.xlsx");
     widget->close();
 }
 

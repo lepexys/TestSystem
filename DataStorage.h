@@ -22,16 +22,18 @@ public:
 
     ~Saver() = default;
 
-    void Save(const QString &path);
+    void Save(const QString &path, QList<pair<QStringList, QStringList>> *dataPtr);
+
 };
 
 class DataStorage : public Loader, public Saver {
 public:
     QList<pair<QStringList, QStringList>> data;
 
-    DataStorage();
+    DataStorage() = default;
 
     ~DataStorage() = default;
+
 };
 
 #endif //TESTSYSTEM_DATASTORAGE_H
